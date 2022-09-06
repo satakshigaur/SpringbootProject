@@ -1,20 +1,34 @@
 package com.micro.springboot.learning.bean;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class User {
 
+	@NotNull(message = "First Name cannot be null")
 	private String firstName;
+	
 	private String lastName;
+	
+	@Min(value = 18, message = "Age should not be less than 18")
+    @Max(value = 80, message = "Age should not be more than 80")
 	private int age;
-	private String loginId;
+	
+	@NotNull(message = "Email Id cannot be null")
+	@Email(message = "Email Id should be valid")
+	private String emailId;
+	
 	private String userId;
 	
-	public User(String userId, String firstName, String lastName, int age, String loginId) {
+	public User(String userId, String firstName, String lastName, int age, String emailId) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
-		this.loginId = loginId;
+		this.emailId = emailId;
 	}
 
 	public String getFirstName() {
@@ -41,12 +55,12 @@ public class User {
 		this.age = age;
 	}
 
-	public String getLoginId() {
-		return loginId;
+	public String getEmailId() {
+		return emailId;
 	}
 
-	public void setLoginId(String loginId) {
-		this.loginId = loginId;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public String getUserId() {

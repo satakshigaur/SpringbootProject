@@ -9,7 +9,7 @@ public interface UserService {
 	
 	User createUser(User user);
 	
-	boolean updateUser(User user);
+	User updateUser(User user);
 	
 	boolean deleteUser(String userId);
 

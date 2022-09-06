@@ -33,9 +33,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public User updateUser(User user) {
+		return userDao.updateUser(user);
 	}
 
 	@Override

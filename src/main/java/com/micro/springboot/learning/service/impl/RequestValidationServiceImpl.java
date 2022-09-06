@@ -21,8 +21,9 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 		if(user == null) {
 			throw new InvalidRequestException("Invalid Request");
 		}
-		checkForExistingUserByUserId(user.getUserId());
-		checkForExistingUserByLoginId(user.getLoginId());
+		if(null  != getExistingUserByUserId(user.getUserId())) {
+			throw new InvalidRequestException("Another user exists with this user Id. Please change user Id");
+		}
 		
 		if(user.getFirstName() == null || user.getFirstName().isEmpty()) {
 			throw new InvalidRequestException("First Name is mandatory");
@@ -32,21 +33,8 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 	}
 	
 	@Override
-	public void checkForExistingUserByUserId(String userId) {
-		User existingUser = userDao.getUserInfoByUserId(userId);
-		if(null != existingUser) {
-			throw new InvalidRequestException("Another user exists with this user Id. Please change user Id");
-		}
-		
-	}
-
-	@Override
-	public void checkForExistingUserByLoginId(String loginId) {
-
-		User existingUser = userDao.getUserInfoByLoginId(loginId);
-		if(null != existingUser) {
-			throw new LoginIdExistsException(loginId);
-		}
+	public User getExistingUserByUserId(String userId) {
+		return userDao.getUserInfoByUserId(userId);
 	}
 
 	@Override
@@ -54,7 +42,6 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 		if(user == null) {
 			throw new InvalidRequestException("Invalid Request");
 		}
-		
 		return true;
 	}
 	
