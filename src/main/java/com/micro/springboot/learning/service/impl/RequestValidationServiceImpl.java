@@ -33,7 +33,7 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 	}
 	
 	@Override
-	public User getExistingUserByUserId(String userId) {
+	public User getExistingUserByUserId(int userId) {
 		return userDao.getUserInfoByUserId(userId);
 	}
 

@@ -1,5 +1,8 @@
 package com.micro.springboot.learning.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,13 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@GetMapping(path="/users/getUsers")
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> userList = new ArrayList<>();
+		userList = userService.getAllUsersDetails();
+		return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+	}
+	
 	@GetMapping(path="/users/getUser/{userId}")
 	public ResponseEntity<User> getUserByUserId(@PathVariable String userId) {
 		return new ResponseEntity<User>(userService.getUserDetails(userId), HttpStatus.OK);
@@ -54,7 +64,7 @@ public class UserController {
 	}
 	
 	@PutMapping(path="users/updateUser/{userId}")
-	public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable String userId){
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable int userId){
 		if(null  == requestValidationService.getExistingUserByUserId(user.getUserId())) {
 			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
 		}
@@ -69,7 +79,7 @@ public class UserController {
 	
 	
 	@DeleteMapping(path="/users/deleteUser/{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable String userId) {
+	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
 		if(null  == requestValidationService.getExistingUserByUserId(userId)) {
 			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
 		}

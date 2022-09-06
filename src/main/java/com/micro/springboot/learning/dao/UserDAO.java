@@ -16,18 +16,18 @@ public class UserDAO {
 	private static List<User> userList = new ArrayList<>();
 	
 	static {
-		userList.add(new User("1001","Kurt","Weller",30,"kurt.weller@test.com"));
-		userList.add(new User("1002","Jane","Doe",29,"jane.doe@test.com"));
-		userList.add(new User("1003","Tasha","Zapata",30,"zapata.tasha@test.com"));
-		userList.add(new User("1004","Edgar","Reade",30,"reade.edgar@test.com"));
+		userList.add(new User(1001,"Kurt","Weller",30,"kurt.weller@test.com"));
+		userList.add(new User(1002,"Jane","Doe",29,"jane.doe@test.com"));
+		userList.add(new User(1003,"Tasha","Zapata",30,"zapata.tasha@test.com"));
+		userList.add(new User(1004,"Edgar","Reade",30,"reade.edgar@test.com"));
 	}
 	public boolean addUser(User user) {
 		userList.add(user);
 		return true;
 	}
 	
-	public User getUserInfoByUserId(String userId) {
-		User user = userList.stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElse(null);
+	public User getUserInfoByUserId(int userId) {
+		User user = userList.stream().filter(u -> u.getUserId() == userId).findFirst().orElse(null);
 
 		return user;
 	}
@@ -37,13 +37,13 @@ public class UserDAO {
 		return user;
 	}
 
-	public boolean deleteUser(String userId) {
+	public boolean deleteUser(int userId) {
 		
 		Iterator<User> itr = userList.iterator();
 		
 		while(itr.hasNext()) {
 			User u = itr.next();
-			if(u.getUserId().equals(userId)) {
+			if(u.getUserId()==userId) {
 				itr.remove();
 				return true;
 			}
@@ -54,7 +54,7 @@ public class UserDAO {
 	public User updateUser(User user) {
 		User existingUser = null;
 		for(User u:userList) {
-			if(u.getUserId().equals(user.getUserId())) {
+			if(u.getUserId()==user.getUserId()) {
 				existingUser = u;
 				if(user.getFirstName()!=null && !user.getFirstName().isEmpty()) {
 					existingUser.setFirstName(user.getFirstName());

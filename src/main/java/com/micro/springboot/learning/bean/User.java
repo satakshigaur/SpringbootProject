@@ -20,15 +20,18 @@ public class User {
 	@Email(message = "Email Id should be valid")
 	private String emailId;
 	
-	private String userId;
+	private int userId;
 	
-	public User(String userId, String firstName, String lastName, int age, String emailId) {
+	public User(int userId, String firstName, String lastName, int age, String emailId) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.emailId = emailId;
+	}
+
+	public User() {
 	}
 
 	public String getFirstName() {
@@ -63,11 +66,11 @@ public class User {
 		this.emailId = emailId;
 	}
 
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 }

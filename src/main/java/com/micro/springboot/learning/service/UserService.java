@@ -1,5 +1,7 @@
 package com.micro.springboot.learning.service;
 
+import java.util.List;
+
 import com.micro.springboot.learning.bean.User;
 
 
@@ -11,6 +13,8 @@ public interface UserService {
 	
 	User updateUser(User user);
 	
-	boolean deleteUser(String userId);
+	boolean deleteUser(int userId);
+
+	List<User> getAllUsersDetails();
 
 }
