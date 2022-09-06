@@ -18,8 +18,7 @@ public class ValueMapper {
 		return user;
 	}
 
-	public static UserInfoEntity mapUserToUserInfoEntity(User user) {
-		UserInfoEntity userInfo = new UserInfoEntity();
+	public static UserInfoEntity mapUserToUserInfoEntity(User user, UserInfoEntity userInfo) {
 		userInfo.setFirstName(user.getFirstName());
 		userInfo.setLastName(user.getLastName());
 		userInfo.setAge(user.getAge());

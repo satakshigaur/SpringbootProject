@@ -7,7 +7,7 @@ import com.micro.springboot.learning.bean.User;
 
 public interface UserService {
 	
-	User getUserDetails(String userId);
+	User getUserDetails(int userId);
 	
 	User createUser(User user);
 	

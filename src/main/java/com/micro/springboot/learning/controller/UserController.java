@@ -43,7 +43,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/users/getUser/{userId}")
-	public ResponseEntity<User> getUserByUserId(@PathVariable String userId) {
+	public ResponseEntity<User> getUserByUserId(@PathVariable int userId) {
 		return new ResponseEntity<User>(userService.getUserDetails(userId), HttpStatus.OK);
 	}
 
@@ -65,7 +65,7 @@ public class UserController {
 	
 	@PutMapping(path="users/updateUser/{userId}")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable int userId){
-		if(null  == requestValidationService.getExistingUserByUserId(user.getUserId())) {
+		if(!requestValidationService.checkIfUserIdExists(userId)) {
 			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
 		}
 		user.setUserId(userId);
@@ -80,7 +80,7 @@ public class UserController {
 	
 	@DeleteMapping(path="/users/deleteUser/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
-		if(null  == requestValidationService.getExistingUserByUserId(userId)) {
+		if(!requestValidationService.checkIfUserIdExists(userId)) {
 			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
 		}
 		if(userService.deleteUser(userId)) {

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	UserInfoRepository userInfoRepository;
 
 	@Override
-	public User getUserDetails(String userId) {
+	public User getUserDetails(int userId) {
 		User user = null;
 		try {
 			UserInfoEntity userInfo = userInfoRepository.findById(Integer.valueOf(userId)).get();
@@ -70,7 +70,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(User user) {
-		UserInfoEntity userInfo = ValueMapper.mapUserToUserInfoEntity(user);
+		UserInfoEntity userInfo = new UserInfoEntity();
+		userInfo = ValueMapper.mapUserToUserInfoEntity(user,userInfo);
 		try {
 			userInfoRepository.save(userInfo);
 			user.setUserId(userInfo.getId());
@@ -83,14 +84,29 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		UserInfoEntity userInfo = new UserInfoEntity();
+		userInfo.setId(user.getUserId());
+		userInfo = ValueMapper.mapUserToUserInfoEntity(user,userInfo);
+		try {
+			userInfoRepository.save(userInfo);
+		}catch(Exception e) {
+			System.out.println("Unable to update user info");
+			return null;
+		}
+		return user;
 	}
 
 	@Override
 	public boolean deleteUser(int userId) {
-		// TODO Auto-generated method stub
-		return false;
+		UserInfoEntity userInfo = userInfoRepository.findById(Integer.valueOf(userId)).get();
+		try {
+			userInfoRepository.delete(userInfo);
+		}catch(Exception e) {
+			System.out.println("Unable to update user");
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override

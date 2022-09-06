@@ -10,6 +10,6 @@ public interface RequestValidationService {
 
 	boolean validateUpdateUserRequest(User user) throws InvalidRequestException;
 
-	User getExistingUserByUserId(int userId);
+	boolean checkIfUserIdExists(int userId);
 
 }
