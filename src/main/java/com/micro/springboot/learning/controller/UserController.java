@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.micro.springboot.learning.dao.UserDAO;
+import com.micro.springboot.learning.exception.GenericException;
 import com.micro.springboot.learning.exception.InvalidRequestException;
 import com.micro.springboot.learning.model.CreateUserRequest;
 import com.micro.springboot.learning.model.UpdateUserRequest;
@@ -31,9 +31,6 @@ import com.micro.springboot.learning.service.UserService;
 public class UserController {
 	
 	Logger logger = LoggerFactory.getLogger(UserController.class);
-	
-	@Autowired
-	UserDAO userDao;
 	
 	@Autowired
 	RequestValidationService requestValidationService;
@@ -63,7 +60,7 @@ public class UserController {
 
 		User createdUser = userService.createUser(userRequest);
 		if(createdUser == null) {
-			return new ResponseEntity<User>(createdUser, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new GenericException();
 		}
 		return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
 		
@@ -72,7 +69,6 @@ public class UserController {
 	@PutMapping(path="users/updateUser/{userId}")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUserRequest userRequest, @PathVariable int userId){
 		
-		logger.info("Age for update is "+ userRequest.getAge());
 		try {
 			requestValidationService.validateUpdateUserRequest(userRequest);
 		}catch(InvalidRequestException ire) {
@@ -80,7 +76,7 @@ public class UserController {
 		}
 		User updatedUser = userService.updateUser(userRequest, userId);
 		if(updatedUser == null) {
-			return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new GenericException();
 		}
 		return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
 		
