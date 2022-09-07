@@ -3,8 +3,9 @@ package com.micro.springboot.learning.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.micro.springboot.learning.bean.User;
 import com.micro.springboot.learning.entity.UserInfoEntity;
+import com.micro.springboot.learning.model.CreateUserRequest;
+import com.micro.springboot.learning.model.User;
 
 public class ValueMapper {
 
@@ -18,7 +19,7 @@ public class ValueMapper {
 		return user;
 	}
 
-	public static UserInfoEntity mapUserToUserInfoEntity(User user, UserInfoEntity userInfo) {
+	public static UserInfoEntity mapUserToUserInfoEntity(CreateUserRequest user, UserInfoEntity userInfo) {
 		userInfo.setFirstName(user.getFirstName());
 		userInfo.setLastName(user.getLastName());
 		userInfo.setAge(user.getAge());

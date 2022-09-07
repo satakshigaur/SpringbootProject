@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.micro.springboot.learning.bean.User;
 import com.micro.springboot.learning.dao.UserDAO;
 import com.micro.springboot.learning.exception.InvalidRequestException;
+import com.micro.springboot.learning.model.CreateUserRequest;
+import com.micro.springboot.learning.model.UpdateUserRequest;
+import com.micro.springboot.learning.model.User;
 import com.micro.springboot.learning.service.RequestValidationService;
 import com.micro.springboot.learning.service.UserService;
 
@@ -48,30 +50,33 @@ public class UserController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST,path="/users/addUser")
-	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+	public ResponseEntity<User> addUser(@Valid @RequestBody CreateUserRequest userRequest) {
 		try {
-			requestValidationService.validateCreateUserRequest(user);
+			requestValidationService.validateCreateUserRequest(userRequest);
 		}catch(InvalidRequestException ire) {
 			throw ire;
 		}
 
-		User createdUser = userService.createUser(user);
+		User createdUser = userService.createUser(userRequest);
 		if(createdUser == null) {
-			return new ResponseEntity<User>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<User>(createdUser, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
 		
 	}
 	
 	@PutMapping(path="users/updateUser/{userId}")
-	public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable int userId){
-		if(!requestValidationService.checkIfUserIdExists(userId)) {
-			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
+	public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUserRequest userRequest, @PathVariable int userId){
+		
+		System.out.println("Age for update is "+ userRequest.getAge());
+		try {
+			requestValidationService.validateUpdateUserRequest(userRequest);
+		}catch(InvalidRequestException ire) {
+			throw ire;
 		}
-		user.setUserId(userId);
-		User updatedUser = userService.updateUser(user);
+		User updatedUser = userService.updateUser(userRequest, userId);
 		if(updatedUser == null) {
-			return new ResponseEntity<User>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
 		
@@ -80,9 +85,7 @@ public class UserController {
 	
 	@DeleteMapping(path="/users/deleteUser/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
-		if(!requestValidationService.checkIfUserIdExists(userId)) {
-			throw new InvalidRequestException("No user exists with this user Id. Please change user Id");
-		}
+
 		if(userService.deleteUser(userId)) {
 			return new ResponseEntity<String>("User Deleted Successfully",HttpStatus.OK);
 		}

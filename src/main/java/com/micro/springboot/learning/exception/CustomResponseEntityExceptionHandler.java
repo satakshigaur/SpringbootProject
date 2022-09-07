@@ -17,9 +17,4 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return new ResponseEntity<Object>("User Not found",HttpStatus.NOT_FOUND);
 	}
 	
-//	@ExceptionHandler(LoginIdExistsException.class)
-//	public final ResponseEntity<Object> handleExistingLoginIdException(Exception ex, WebRequest request){
-//		return new ResponseEntity<Object>("Login Id exists",HttpStatus.NOT_FOUND);
-//	}
-	
 }

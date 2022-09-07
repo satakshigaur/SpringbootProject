@@ -1,37 +1,35 @@
-package com.micro.springboot.learning.bean;
+package com.micro.springboot.learning.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class User {
+public class CreateUserRequest {
 
-	@NotNull(message = "First Name cannot be null")
+	@NotNull(message = "First Name is mandatory")
 	private String firstName;
 	
 	private String lastName;
 	
 	@Min(value = 18, message = "Age should not be less than 18")
     @Max(value = 80, message = "Age should not be more than 80")
+	@NotNull(message = "Age is mandatory")
 	private int age;
 	
-	@NotNull(message = "Email Id cannot be null")
+	@NotNull(message = "Email Id is mandatory")
 	@Email(message = "Email Id should be valid")
 	private String emailId;
 	
-	private int userId;
-	
-	public User(int userId, String firstName, String lastName, int age, String emailId) {
+	public CreateUserRequest( String firstName, String lastName, int age, String emailId) {
 		super();
-		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.emailId = emailId;
 	}
 
-	public User() {
+	public CreateUserRequest() {
 	}
 
 	public String getFirstName() {
@@ -66,11 +64,10 @@ public class User {
 		this.emailId = emailId;
 	}
 
-	public int getUserId() {
-		return userId;
+	@Override
+	public String toString() {
+		return "CreateUserRequest [firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", emailId="
+				+ emailId + "]";
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
 }

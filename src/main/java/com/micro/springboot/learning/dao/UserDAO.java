@@ -8,8 +8,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.micro.springboot.learning.bean.User;
+import com.micro.springboot.learning.model.User;
 
+// unused class after in memory DB logic
 @Component
 public class UserDAO {
 

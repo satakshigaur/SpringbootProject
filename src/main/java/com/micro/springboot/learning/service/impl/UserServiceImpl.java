@@ -2,14 +2,18 @@ package com.micro.springboot.learning.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.micro.springboot.learning.bean.User;
 import com.micro.springboot.learning.dao.UserDAO;
 import com.micro.springboot.learning.entity.UserInfoEntity;
+import com.micro.springboot.learning.exception.GenericException;
 import com.micro.springboot.learning.exception.UserNotFoundException;
+import com.micro.springboot.learning.model.CreateUserRequest;
+import com.micro.springboot.learning.model.UpdateUserRequest;
+import com.micro.springboot.learning.model.User;
 import com.micro.springboot.learning.repository.UserInfoRepository;
 import com.micro.springboot.learning.service.UserService;
 import com.micro.springboot.learning.util.ValueMapper;
@@ -69,44 +73,63 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User createUser(User user) {
+	public User createUser(CreateUserRequest userRequest) {
+		User user = null;
 		UserInfoEntity userInfo = new UserInfoEntity();
-		userInfo = ValueMapper.mapUserToUserInfoEntity(user,userInfo);
+		userInfo = ValueMapper.mapUserToUserInfoEntity(userRequest,userInfo);
 		try {
 			userInfoRepository.save(userInfo);
-			user.setUserId(userInfo.getId());
+			user = ValueMapper.mapUserInfoEntityToUser(userInfo);
 		}catch(Exception e) {
 			System.out.println("Unable to save user info");
-			return null;
+			throw new GenericException();
 		}
 		return user;
 	}
 
 	@Override
-	public User updateUser(User user) {
-		UserInfoEntity userInfo = new UserInfoEntity();
-		userInfo.setId(user.getUserId());
-		userInfo = ValueMapper.mapUserToUserInfoEntity(user,userInfo);
+	public User updateUser(UpdateUserRequest userRequest, int userId) {
+		User user = null;
+
 		try {
-			userInfoRepository.save(userInfo);
+			Optional<UserInfoEntity> userInfo = userInfoRepository.findById(userId);
+			if(userInfo.isPresent()) {
+				UserInfoEntity userInfoEntity = userInfo.get();
+				if(userRequest.getFirstName()!=null) {
+					userInfoEntity.setFirstName(userRequest.getFirstName());
+				}
+				if(userRequest.getLastName()!=null) {
+					userInfoEntity.setLastName(userRequest.getLastName());
+				}
+				if(userRequest.getEmailId()!=null) {
+					userInfoEntity.setEmailId(userRequest.getEmailId());
+				}
+				if((Integer)userRequest.getAge() != null) {
+					userInfoEntity.setAge(userRequest.getAge());
+				}
+				userInfoEntity = userInfoRepository.save(userInfoEntity);
+				user = ValueMapper.mapUserInfoEntityToUser(userInfoEntity);
+			}else {
+				throw new UserNotFoundException(userId);
+			}
+		}catch(UserNotFoundException nse) {
+			throw nse;
 		}catch(Exception e) {
-			System.out.println("Unable to update user info");
-			return null;
+			System.out.println("Unable to udpate user info");
+			throw new GenericException();
 		}
 		return user;
 	}
 
 	@Override
 	public boolean deleteUser(int userId) {
-		UserInfoEntity userInfo = userInfoRepository.findById(Integer.valueOf(userId)).get();
-		try {
-			userInfoRepository.delete(userInfo);
-		}catch(Exception e) {
-			System.out.println("Unable to update user");
-			return false;
+		Optional<UserInfoEntity> userInfo = userInfoRepository.findById(userId);
+		if(userInfo.isPresent()) {
+			userInfoRepository.delete(userInfo.get());
+			return true;
+		}else {
+			throw new UserNotFoundException(userId);
 		}
-		
-		return true;
 	}
 
 	@Override

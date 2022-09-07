@@ -5,12 +5,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.micro.springboot.learning.bean.User;
 import com.micro.springboot.learning.dao.UserDAO;
 import com.micro.springboot.learning.entity.UserInfoEntity;
 import com.micro.springboot.learning.exception.InvalidRequestException;
-import com.micro.springboot.learning.exception.LoginIdExistsException;
+import com.micro.springboot.learning.exception.GenericException;
 import com.micro.springboot.learning.exception.UserNotFoundException;
+import com.micro.springboot.learning.model.CreateUserRequest;
+import com.micro.springboot.learning.model.UpdateUserRequest;
+import com.micro.springboot.learning.model.User;
 import com.micro.springboot.learning.repository.UserInfoRepository;
 import com.micro.springboot.learning.service.RequestValidationService;
 
@@ -24,18 +26,10 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 	UserInfoRepository userInfoRepository;
 
 	@Override
-	public boolean validateCreateUserRequest(User user) throws InvalidRequestException {
-		if(user == null) {
-			throw new InvalidRequestException("Invalid Request");
-		}
+	public boolean validateCreateUserRequest(CreateUserRequest user) throws InvalidRequestException {
 		
-		if(checkIfUserIdExists(user.getUserId())) {
-			throw new InvalidRequestException("Another user exists with this user Id. "
-					+ "Please remove user Id from request. It will be auto generated");
-		}
-		
-		if(user.getFirstName() == null || user.getFirstName().isEmpty()) {
-			throw new InvalidRequestException("First Name is mandatory");
+		if(user.getLastName() != null && user.getLastName().isEmpty()) {
+			throw new InvalidRequestException("Last Name is invalid");
 		}
 		
 		return true;
@@ -53,13 +47,17 @@ public class RequestValidationServiceImpl implements RequestValidationService {
 	}
 
 	@Override
-	public boolean validateUpdateUserRequest(User user) throws InvalidRequestException {
-		if(user == null) {
-			throw new InvalidRequestException("Invalid Request");
+	public boolean validateUpdateUserRequest(UpdateUserRequest user) throws InvalidRequestException {
+		if(user.getFirstName()!=null && user.getFirstName().isEmpty() ) {
+			throw new InvalidRequestException("First Name is invalid");
+		}
+		if(user.getLastName() != null && user.getLastName().isEmpty()) {
+			throw new InvalidRequestException("Last Name is invalid");
+		}
+		if(user.getEmailId()!=null && user.getEmailId().isEmpty()) {
+			throw new InvalidRequestException("Email Id is invalid");
 		}
 		return true;
 	}
-	
-	
 
 }
