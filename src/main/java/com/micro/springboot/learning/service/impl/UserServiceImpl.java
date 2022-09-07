@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import com.micro.springboot.learning.util.ValueMapper;
 
 @Service
 public class UserServiceImpl implements UserService {
+	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	/*
 	@Autowired
 	UserDAO userDao;
@@ -81,7 +84,7 @@ public class UserServiceImpl implements UserService {
 			userInfoRepository.save(userInfo);
 			user = ValueMapper.mapUserInfoEntityToUser(userInfo);
 		}catch(Exception e) {
-			System.out.println("Unable to save user info");
+			logger.error("Exception occurred while saving user ", e);
 			throw new GenericException();
 		}
 		return user;
@@ -115,7 +118,7 @@ public class UserServiceImpl implements UserService {
 		}catch(UserNotFoundException nse) {
 			throw nse;
 		}catch(Exception e) {
-			System.out.println("Unable to udpate user info");
+			logger.error("Exception occurred while updating user ", e);
 			throw new GenericException();
 		}
 		return user;
@@ -126,6 +129,7 @@ public class UserServiceImpl implements UserService {
 		Optional<UserInfoEntity> userInfo = userInfoRepository.findById(userId);
 		if(userInfo.isPresent()) {
 			userInfoRepository.delete(userInfo.get());
+			logger.info("User with id "+userId+ " deleted successfully");
 			return true;
 		}else {
 			throw new UserNotFoundException(userId);
@@ -139,7 +143,7 @@ public class UserServiceImpl implements UserService {
 			List<UserInfoEntity> userInfo = (List<UserInfoEntity>) userInfoRepository.findAll();
 			userList = ValueMapper.mapAllUserInfoEntityToUser(userInfo);
 		}catch(NoSuchElementException nse) {
-			System.out.println("no users found");
+			logger.error("Exception occurred while getting all users ", nse);
 		}
 		return userList;
 	}

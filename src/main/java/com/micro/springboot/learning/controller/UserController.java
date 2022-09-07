@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import com.micro.springboot.learning.service.UserService;
 
 @RestController
 public class UserController {
+	
+	Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	UserDAO userDao;
@@ -68,7 +72,7 @@ public class UserController {
 	@PutMapping(path="users/updateUser/{userId}")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUserRequest userRequest, @PathVariable int userId){
 		
-		System.out.println("Age for update is "+ userRequest.getAge());
+		logger.info("Age for update is "+ userRequest.getAge());
 		try {
 			requestValidationService.validateUpdateUserRequest(userRequest);
 		}catch(InvalidRequestException ire) {
