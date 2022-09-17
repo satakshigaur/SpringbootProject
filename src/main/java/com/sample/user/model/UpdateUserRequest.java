@@ -5,6 +5,17 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UpdateUserRequest {
 
 	private String firstName;
@@ -17,53 +28,4 @@ public class UpdateUserRequest {
 	@Email(message = "Email Id should be valid")
 	private String emailId;
 	
-	public UpdateUserRequest( String firstName, String lastName, int age, String emailId) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.age = age;
-		this.emailId = emailId;
-	}
-
-	public UpdateUserRequest() {
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	@Override
-	public String toString() {
-		return "CreateUserRequest [firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", emailId="
-				+ emailId + "]";
-	}
-
 }

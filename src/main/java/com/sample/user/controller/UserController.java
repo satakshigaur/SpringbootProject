@@ -28,6 +28,7 @@ import com.sample.user.service.RequestValidationService;
 import com.sample.user.service.UserService;
 
 @RestController
+@RequestMapping(path="/users")
 public class UserController {
 	
 	Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -38,19 +39,19 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping(path="/users/getUsers")
+	@GetMapping(path="/getUsers")
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> userList = new ArrayList<>();
 		userList = userService.getAllUsersDetails();
 		return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/users/getUser/{userId}")
+	@GetMapping(path="/getUser/{userId}")
 	public ResponseEntity<User> getUserByUserId(@PathVariable int userId) {
 		return new ResponseEntity<User>(userService.getUserDetails(userId), HttpStatus.OK);
 	}
 
-	@RequestMapping(method=RequestMethod.POST,path="/users/addUser")
+	@RequestMapping(method=RequestMethod.POST,path="/addUser")
 	public ResponseEntity<User> addUser(@Valid @RequestBody CreateUserRequest userRequest) {
 		try {
 			requestValidationService.validateCreateUserRequest(userRequest);
@@ -66,7 +67,7 @@ public class UserController {
 		
 	}
 	
-	@PutMapping(path="users/updateUser/{userId}")
+	@PutMapping(path="/updateUser/{userId}")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUserRequest userRequest, @PathVariable int userId){
 		
 		try {
@@ -83,7 +84,7 @@ public class UserController {
 	}
 	
 	
-	@DeleteMapping(path="/users/deleteUser/{userId}")
+	@DeleteMapping(path="/deleteUser/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
 
 		if(userService.deleteUser(userId)) {
