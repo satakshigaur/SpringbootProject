@@ -3,7 +3,6 @@ package com.sample.user.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sample.user.dao.UserDAO;
 import com.sample.user.exception.InvalidRequestException;
 import com.sample.user.model.CreateUserRequest;
 import com.sample.user.model.UpdateUserRequest;
@@ -12,9 +11,6 @@ import com.sample.user.service.RequestValidationService;
 
 @Service
 public class RequestValidationServiceImpl implements RequestValidationService {
-	
-	@Autowired
-	UserDAO userDao;
 	
 	@Autowired
 	UserInfoRepository userInfoRepository;

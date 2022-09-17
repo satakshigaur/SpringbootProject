@@ -7,6 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.sample.user.model.CreateUserRequest;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
 @Entity
 @Table(name="user_info")
 public class UserInfoEntity {
@@ -27,51 +38,5 @@ public class UserInfoEntity {
     
     @Column(name="age")
     private int age;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int userId) {
-		this.id = userId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	@Override
-	public String toString() {
-		return "UserInfoEntity [userId=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId="
-				+ emailId + ", age=" + age + "]";
-	}
 
 }
