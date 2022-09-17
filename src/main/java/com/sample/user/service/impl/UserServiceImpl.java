@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sample.user.dao.UserDAO;
 import com.sample.user.entity.UserInfoEntity;
 import com.sample.user.exception.GenericException;
 import com.sample.user.exception.UserNotFoundException;
@@ -23,39 +22,7 @@ import com.sample.user.util.ValueMapper;
 @Service
 public class UserServiceImpl implements UserService {
 	Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-	/*
-	@Autowired
-	UserDAO userDao;
 	
-	@Override
-	public User getUserDetails(int userId) {
-		User user = userDao.getUserInfoByUserId(userId);
-		if(null == user) {
-			throw new UserNotFoundException(userId);
-		}
-		return user;
-	}
-
-	@Override
-	public User createUser(User user) {
-		boolean result = userDao.addUser(user);
-		if(result) {
-			return user;
-		}
-		return null;
-	}
-
-	@Override
-	public User updateUser(User user) {
-		return userDao.updateUser(user);
-	}
-
-	@Override
-	public boolean deleteUser(int userId) {
-		boolean deleted = userDao.deleteUser(userId);
-		return deleted;
-	}
-	*/
 	@Autowired
 	UserInfoRepository userInfoRepository;
 
